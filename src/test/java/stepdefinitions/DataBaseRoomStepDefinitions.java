@@ -40,4 +40,18 @@ public class DataBaseRoomStepDefinitions {
         assertEquals(expectedData.getDescription(), resultSet.getObject("description"));
 
     }
+    /*BU SEKILDE DE YAPABILIRDIK
+          String roomType = resultSet.getString("room_type");
+        Boolean status = resultSet.getBoolean("status");
+        Double price = resultSet.getDouble("price");
+        String description = resultSet.getString("description");
+        Integer roomNumber = resultSet.getInt("room_number");
+
+        assertEquals(expectedData.getRoomType(), roomType);
+        assertEquals(expectedData.getStatus(), status);
+        assertEquals(expectedData.getPrice(), price);
+        assertEquals(expectedData.getDescription(), description);
+        assertEquals(expectedData.getRoomNumber(), roomNumber);
+
+     */
 }
