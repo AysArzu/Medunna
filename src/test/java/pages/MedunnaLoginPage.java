@@ -14,7 +14,7 @@ public class MedunnaLoginPage {
     @FindBy(id = "username")
     public WebElement usernameInput;
 
-    @FindBy(xpath = "//input[@name='password']")
+    @FindBy(id = "password")
     public WebElement passwordInput;
 
     @FindBy(id = "rememberMe")

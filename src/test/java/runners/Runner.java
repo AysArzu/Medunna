@@ -5,15 +5,13 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions (
+@CucumberOptions(
 
-        features="src/test/resources/endtoend_features",
+        features="src/test/resources",
         glue= {"stepdefinitions","hooks"},
-        tags="@api",
+        tags= "@e2e",//Çalışacak scenarioları belirtir.
         dryRun= false
 )
 
-
 public class Runner {
-
 }

@@ -3,67 +3,60 @@ package utilities;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
-/*
-    Driver class'indaki mantik extends yontemi ile degil yani TestBase class'ina extend etmek yerine
-    Driver classindan static methodlar kullanarak druver olustururuz.Statik oldugu icin class ismi ile
-    heryerden methoda ulasabilecegiz.
- */
 public class Driver {
 
-    static WebDriver driver;
+    private Driver(){
 
-    public static WebDriver getDriver() {
-        /*
-        Driver'i her cagirdiginda yeni bir pencere acilmasinin onune gecmek icin
-        if blogu icinde Eger driver'a deger atanmamissa deger ata, Eger deger atanmissa Driver'i ayni sayfada Return et.
-        Bunun icin sadece yapmamiz gerek if(driver== nul)kullanmaktir.
-         */
-/*
-    Singleton Pattern: Tekli kullanım kalıbı.
-        Bir class'tan obje oluşturulmasının önüne geçilmesi için kullanılan ifade
-        Bir class'tan obje oluşturmanın önüne geçmek için default constructor'ın kullanımını engellemek için
-    private access modifire kullanarak bir constructor oluştururuz
-     */
-        if (driver == null) {
+    }
+
+    private static WebDriver driver;
+    // driver'i baska class'lardan sadece Driver class ismi ile cagirabilmek icin STATIC yaptik
+    // henuz bu driver ile ilgili ayarlar yapmadigim icin baska class'lar bunu yanlislikla kullanmasin diye
+    // erisimi private yaptik (sadece bu class'in kullanimina acik yaptik)
+
+    public static WebDriver getDriver(){
+        if (driver==null){
+            // if'i bu method her calistiginda yeni bir driver olusturmamasi icin kullaniyorruz
+            // if driver'i kontrol edecek eger bir deger atamasi yapildiysa yeni bir driver olusturmayacak
             switch (ConfigReader.getProperty("browser")) {
+                // case'i driver'i istedigimiz browser'da calistirmak icin kullaniyoruz
+                // configuration.properties dosyasinda browser olarak ne yazdiksa tum testlerimiz o browser'da calisacak
+                // browser secimi yapilmadiysa default olarak chrome devreye girecek
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver(new ChromeOptions().addArguments("--remote-allow-origins=*"));
+                    driver = new ChromeDriver();
                     break;
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver();
+                    break;
+
                 case "edge":
                     WebDriverManager.edgedriver().setup();
-                    driver = new EdgeDriver(new EdgeOptions().addArguments("--remote-allow-origins=*"));
+                    driver = new EdgeDriver();
                     break;
                 default:
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver(new ChromeOptions().addArguments("--remote-allow-origins=*"));
+                    driver = new ChromeDriver();
             }
 
             driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+            driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         }
-
         return driver;
     }
 
-    public static void closeDriver() {
-        if (driver != null) {//Driver'a değer atanmışşsa
-            driver.close();
-            driver = null;
-        }
-    }
-
-    public static void quitDriver() {
-        if (driver != null) {//Driver'a değer atanmışşsa
+    public static void closeDriver(){
+        if (driver!=null){
             driver.quit();
-            driver = null;
         }
+        // burada yeniden null degeri atamamizin sebebi. bir sonraki getDriver method'u cagirisimizda
+        // yeni deger atayabilmek istememizdir.
+        driver=null;
     }
 }

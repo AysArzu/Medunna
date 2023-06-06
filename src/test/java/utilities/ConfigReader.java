@@ -1,41 +1,36 @@
 package utilities;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigReader {
+    // 1- Properties objesi olusturacagiz
 
-    //    Bu sinif configuration.properties file'i okumak icin kullanilir.
-//    property file'i okumak icin property objesi olustururuz.
-    private static Properties properties;
+    static Properties properties;
 
-    //Herseyden once calismasi icin static block icerisinde, olusturmus oldugum properties dosyasini tanimlar
-    //ve atamasini yapariz. FileInputStream ile dosya yolunu akisa aliriz.
-//    static block : ilk calisir
+    // 2- Bu class'in amaci configuration.properties dosyasini okumak
+    //    ve oraadaki key value ikililerini kullanarak istedigimiz key'e ait value'yu bize getirmek
+    //
     static {
-//        data cekmek istedigim dosyaninin path i
-        String path = "configuration.properties";
+        String dosyaYolu="configuration.properties";
         try {
-//            configuration.property dosyasini acar
-            FileInputStream fileInputStream = new FileInputStream(path);
-//            properties objesini instantiate ediyoruz
-            properties = new Properties();//objeyi olusturduk atamasini gerceklestirdik!
-//            configuration.property dosyasindaki datalari yükler
-            properties.load(fileInputStream);//fis'in okudugu bilgileri properties'e yukler
-//            file input stream'i kapatilir
-            fileInputStream.close();
-        } catch (Exception e) {
+            FileInputStream fileInputStream=new FileInputStream(dosyaYolu);
+            properties=new Properties();
+            properties.load(fileInputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //    ConfigReader.getProperty("browser"); -> chrome
-//    ConfigReader.getProperty("amazon_url"); -> https://www.amazon.com
-//    ConfigReader.getProperty("username"); -> ali
-    public static String getProperty(String key) {//String bir deger dondurmesi icin String bir parametre atariz
-        String value = properties.getProperty(key);
+    // 3- test class'larindan configReader class'ina ulasip yukaridaki islemleri
+    //    yapmamizi saglayacak bir method olusturacagiz
+    public static String getProperty(String key){
+
+        String value=properties.getProperty(key);
         return value;
     }
-
-
 }

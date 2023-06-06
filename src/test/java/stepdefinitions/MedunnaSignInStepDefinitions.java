@@ -7,7 +7,7 @@ import pages.MedunnaLoginPage;
 import utilities.ConfigReader;
 import utilities.Driver;
 
-import static utilities.ReusableMethods.sendKeysJS;
+import static utilities.ReusableMethods.click;
 
 public class MedunnaSignInStepDefinitions {
     MedunnaHomePage medunnaHomePage = new MedunnaHomePage();
@@ -22,14 +22,13 @@ public class MedunnaSignInStepDefinitions {
     @When("click on user icon")
     public void click_on_user_icon() {
 
-        medunnaHomePage.userIcon.click();
-
+        click( medunnaHomePage.userIcon);
 
     }
     @When("click on sign in option")
     public void click_on_sign_in_option() {
 
-        medunnaHomePage.signInOption.click();
+        click( medunnaHomePage.signInOption);
 
     }
 
@@ -37,7 +36,7 @@ public class MedunnaSignInStepDefinitions {
     @When("send username into username input")
     public void send_username_into_username_input() {
 
-        sendKeysJS(medunnaLoginPage.usernameInput,(ConfigReader.getProperty("medunna_username")));
+        medunnaLoginPage.usernameInput.sendKeys(ConfigReader.getProperty("medunna_username"));
 
     }
 
@@ -51,7 +50,7 @@ public class MedunnaSignInStepDefinitions {
     @When("click on sign in submit button")
     public void click_on_sign_in_submit_button() {
 
-        medunnaLoginPage.signInSubmitButton.click();
+        click( medunnaLoginPage.signInSubmitButton);
 
     }
 }
